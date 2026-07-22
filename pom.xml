@@ -1,0 +1,40 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.18</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.sagatcc.demo</groupId>
+    <artifactId>sagatcc-demo</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>SagaTcc Demo</name>
+
+    <modules>
+        <module>sagatcc-wallet-api</module>
+        <module>sagatcc-wallet-service</module>
+        <module>sagatcc-order-service</module>
+    </modules>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <sagatcc.version>1.0.0-SNAPSHOT</sagatcc.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.sagatcc.demo</groupId>
+                <artifactId>sagatcc-wallet-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
+

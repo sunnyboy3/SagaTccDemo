@@ -1,0 +1,33 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: wallet-service
+  datasource:
+    url: jdbc:mysql://${DEMO_MYSQL_HOST:xxx.xxx.xxx.xxx}:${DEMO_MYSQL_PORT:3306}/service_transaction?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${DEMO_MYSQL_USERNAME:root}
+    password: ${DEMO_MYSQL_PASSWORD:xxx}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+rocketmq:
+  name-server: ${ROCKETMQ_NAME_SERVER:xxx.xxx.xxx.xxx:9876}
+  producer:
+    group: wallet-service-sagatcc-producer
+
+sagatcc:
+  application-name: ${spring.application.name}
+  schema: service_transaction
+  transaction-manager-bean-name: transactionManager
+  scheduler-enabled: true
+  branch-execution-mode: PARALLEL
+  max-attempts: 3
+  retry-base-delay-millis: 100
+  retry-max-delay-millis: 600
+  rocketmq:
+    per-application-topic: true
+    command-topic-prefix: sagatcc-command-
+    result-topic-prefix: sagatcc-result-
+    command-topic: sagatcc-command-${spring.application.name}
+    result-topic: sagatcc-result-${spring.application.name}
+
