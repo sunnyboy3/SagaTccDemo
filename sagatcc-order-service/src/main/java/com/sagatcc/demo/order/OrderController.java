@@ -19,8 +19,9 @@ public class OrderController {
     }
 
     @PostMapping
-    public CreateOrderResponse create(@RequestParam long userId, @RequestParam long amount) {
-        return orderApplicationService.createOrder(userId, amount);
+    public CreateOrderResponse create(@RequestParam long userId, @RequestParam long amount,
+                                      @RequestParam Integer seq) {
+        return orderApplicationService.createOrder(userId, amount, seq);
     }
 
     @GetMapping("/{orderId}")

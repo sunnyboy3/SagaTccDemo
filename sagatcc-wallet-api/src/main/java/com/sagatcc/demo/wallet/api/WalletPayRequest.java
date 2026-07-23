@@ -13,13 +13,15 @@ public class WalletPayRequest implements SagaTccRequest {
 
     private Long userId;
     private Long amount;
+    private Integer seq;
 
     public WalletPayRequest() {
     }
 
-    public WalletPayRequest(Long userId, Long amount) {
+    public WalletPayRequest(Long userId, Long amount, Integer seq) {
         this.userId = userId;
         this.amount = amount;
+        this.seq = seq;
     }
 
     public Long getUserId() {
@@ -36,6 +38,14 @@ public class WalletPayRequest implements SagaTccRequest {
 
     public void setAmount(Long amount) {
         this.amount = amount;
+    }
+
+    public Integer getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Integer seq) {
+        this.seq = seq;
     }
 }
 

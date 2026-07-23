@@ -23,7 +23,10 @@ public class WalletAccountService {
     }
 
     public void tryPay(WalletPayRequest request) {
-        System.out.println("1-tryPay" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")));
+        System.out.println(request.getSeq() + "-tryPay" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")));
+        if (request.getSeq() == 5) {
+            throw new SagaTccNonRetryableException("订单支付异常");
+        }
         validate(request);
         int updated = jdbcTemplate.update(
                 "update wallet_account set frozen_amount = frozen_amount + ?, "
@@ -33,10 +36,16 @@ public class WalletAccountService {
         if (updated != 1) {
             throw new SagaTccNonRetryableException("钱包不存在或可用余额不足");
         }
+        if (request.getSeq() == 6) {
+            throw new SagaTccNonRetryableException("订单支付异常");
+        }
     }
 
     public void confirmPay(WalletPayRequest request) {
-        System.out.println("1-confirmPay" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")));
+        System.out.println(request.getSeq() + "-confirmPay" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")));
+        if (request.getSeq() == 7) {
+            throw new SagaTccNonRetryableException("订单支付异常");
+        }
         validate(request);
         int updated = jdbcTemplate.update(
                 "update wallet_account set total_amount = total_amount - ?, "
@@ -46,10 +55,16 @@ public class WalletAccountService {
         if (updated != 1) {
             throw new SagaTccNonRetryableException("确认扣款时冻结金额不足");
         }
+        if (request.getSeq() == 8) {
+            throw new SagaTccNonRetryableException("订单支付异常");
+        }
     }
 
     public void cancelPay(WalletPayRequest request) {
-        System.out.println("1-cancelPay" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")));
+        System.out.println(request.getSeq() + "-cancelPay" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")));
+        if (request.getSeq() == 9) {
+            throw new SagaTccNonRetryableException("订单支付异常");
+        }
         validate(request);
         int updated = jdbcTemplate.update(
                 "update wallet_account set frozen_amount = frozen_amount - ?, "
@@ -57,6 +72,9 @@ public class WalletAccountService {
                 request.getAmount(), request.getUserId(), request.getAmount());
         if (updated != 1) {
             throw new SagaTccNonRetryableException("取消支付时冻结金额不足");
+        }
+        if (request.getSeq() == 10) {
+            throw new SagaTccNonRetryableException("订单支付异常");
         }
     }
 

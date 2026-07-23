@@ -27,15 +27,15 @@ public class OrderApplicationService {
     }
 
     @Transactional
-    public CreateOrderResponse createOrder(long userId, long amount) {
+    public CreateOrderResponse createOrder(long userId, long amount, Integer seq) {
         if (userId <= 0 || amount <= 0) {
             throw new IllegalArgumentException("用户标识和支付金额必须大于零");
         }
 
         Long orderId = insertOrder(userId, amount);
         String sagaId = sagaTccOperations.begin("createOrder", String.valueOf(orderId));
-        sagaTccOperations.enlist(new OrderFinalizeRequest(orderId));
-        sagaTccOperations.enlist(new WalletPayRequest(userId, amount));
+        sagaTccOperations.enlist(new OrderFinalizeRequest(orderId, seq));
+        sagaTccOperations.enlist(new WalletPayRequest(userId, amount, seq));
         return new CreateOrderResponse(orderId, sagaId, "PENDING");
     }
 

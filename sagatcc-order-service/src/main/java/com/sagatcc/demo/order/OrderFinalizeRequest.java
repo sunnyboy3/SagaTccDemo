@@ -12,12 +12,14 @@ public class OrderFinalizeRequest implements SagaTccRequest {
     private static final long serialVersionUID = 1L;
 
     private Long orderId;
+    private Integer seq;
 
     public OrderFinalizeRequest() {
     }
 
-    public OrderFinalizeRequest(Long orderId) {
+    public OrderFinalizeRequest(Long orderId, Integer seq) {
         this.orderId = orderId;
+        this.seq = seq;
     }
 
     public Long getOrderId() {
@@ -26,6 +28,14 @@ public class OrderFinalizeRequest implements SagaTccRequest {
 
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
+    }
+
+    public Integer getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Integer seq) {
+        this.seq = seq;
     }
 }
 
