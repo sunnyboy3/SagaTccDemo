@@ -29,8 +29,8 @@ public class WalletAccountService {
         }
         validate(request);
         int updated = jdbcTemplate.update(
-                "update wallet_account set frozen_amount = frozen_amount + ?, "
-                        + "update_time = current_timestamp(3) where user_id = ? "
+                "update wallet_account set frozen_amount = frozen_amount + ? "
+                        + " where user_id = ? "
                         + "and total_amount - frozen_amount >= ?",
                 request.getAmount(), request.getUserId(), request.getAmount());
         if (updated != 1) {
@@ -49,15 +49,18 @@ public class WalletAccountService {
         validate(request);
         int updated = jdbcTemplate.update(
                 "update wallet_account set total_amount = total_amount - ?, "
-                        + "frozen_amount = frozen_amount - ?, update_time = current_timestamp(3) "
-                        + "where user_id = ? and frozen_amount >= ?",
-                request.getAmount(), request.getAmount(), request.getUserId(), request.getAmount());
+                        + "frozen_amount = frozen_amount - ? "
+                        + "where user_id = ?",
+                request.getAmount(), request.getAmount(), request.getUserId());
         if (updated != 1) {
             throw new SagaTccNonRetryableException("确认扣款时冻结金额不足");
         }
         if (request.getSeq() == 8) {
             throw new SagaTccNonRetryableException("订单支付异常");
         }
+        jdbcTemplate.update(
+                "update wallet_account set update_time = current_timestamp(3) where user_id = ?",
+                request.getUserId());
     }
 
     public void cancelPay(WalletPayRequest request) {
